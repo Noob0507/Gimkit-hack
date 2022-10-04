@@ -1,0 +1,2 @@
+# GimkitCheat
+All you need to do is copy the code from script.js and paste it into the console on gimkit. It'll start coloring in the correct answers to questions pretty quickly, and once you've answered all the questions you can spam your mouse at the bottom right.
