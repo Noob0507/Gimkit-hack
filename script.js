@@ -5,6 +5,7 @@
 	let answers = {};
 	let lastQuestion = null;
 	let lastClickedAnswer = null;
+	let wasQuestionAnswered = false;
 	const selector = '.notranslate, img[alt="Answer Choice"]';
 	
 	let observer = new MutationObserver(function() {
@@ -16,6 +17,7 @@
 
 			// if the question was already answered, highlight the correct answer
 			if(lastQuestion in answers){
+				wasQuestionAnswered = true;
 				let answer = answers[lastQuestion];
 				for(let i = 1; i < items.length; i++){
 					let item = items[i]
@@ -47,6 +49,10 @@
 				})
 			}
 		}else{
+			if(wasQuestionAnswered){
+				wasQuestionAnswered = false;
+				return;
+			};
 			let success = false;
 			// figure out whether it was right or not
 			let background = document.querySelector(".sc-kxYOAa");
@@ -56,7 +62,7 @@
 
 			if(success){
 				answers[lastQuestion] = lastClickedAnswer;
-				console.log(answers);
+				// console.log(answers);
 			}
 		}
 	});
