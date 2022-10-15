@@ -17,20 +17,26 @@
 
 			// if the question was already answered, highlight the correct answer
 			if(lastQuestion in answers){
-				wasQuestionAnswered = true;
 				let answer = answers[lastQuestion];
+				let haveCorrectAnswer = false;
+
+				if(answer.correct){
+					haveCorrectAnswer = true;
+					wasQuestionAnswered = true;
+				}
+
 				for(let i = 1; i < items.length; i++){
 					let item = items[i]
 					let parentAmount = 3;
 					if(item.nodeName == 'IMG') parentAmount = 1;
-					if(item.parentElement.innerHTML == answer){
+					if(item.parentElement.innerHTML == answer.correct){
 						item.nthparent(parentAmount).style.backgroundColor = "green";
 						let outer = item.nthparent(parentAmount*2);
 						let buttons = Array.from(document.querySelector(".sc-bvZOhf.fTllCc").children)
 						if(buttons.indexOf(outer) != buttons.length-1){
 							document.querySelector(".sc-bvZOhf.fTllCc").append(outer);
 						}
-					}else{
+					}else if(haveCorrectAnswer || answer.incorrects.includes(item.parentElement.innerHTML)){
 						item.nthparent(parentAmount).style.backgroundColor = "red";
 					}
 				}
@@ -56,12 +62,21 @@
 			let success = false;
 			// figure out whether it was right or not
 			let background = document.querySelector(".sc-kxYOAa");
+			let incorrectBg = document.querySelector(".sc-Kgodr");
 			if(background){
-				if(getComputedStyle(background).backgroundColor == "rgb(56, 142, 60)") success = true;
+				const color = getComputedStyle(background).backgroundColor
+				if(color == "rgb(56, 142, 60)") success = true;
+			}
+			if(incorrectBg){
+				if(!answers[lastQuestion]) answers[lastQuestion] = {}; 
+				if(!answers[lastQuestion].incorrects) answers[lastQuestion].incorrects = [];
+				answers[lastQuestion].incorrects.push(lastClickedAnswer);
 			}
 
 			if(success){
-				answers[lastQuestion] = lastClickedAnswer;
+				if(!answers[lastQuestion]) answers[lastQuestion] = {};
+				answers[lastQuestion].correct = lastClickedAnswer;
+				console.log(answers)
 				// console.log(answers);
 			}
 		}
