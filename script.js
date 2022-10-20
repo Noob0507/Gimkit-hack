@@ -6,14 +6,14 @@
 	let lastQuestion = null;
 	let lastClickedAnswer = null;
 	let wasQuestionAnswered = false;
-	const selector = '.notranslate, img[alt="Answer Choice"]';
+	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 	
 	let observer = new MutationObserver(function() {
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
 		// console.log(items.length)
 		if(items.length > 0){
-			lastQuestion = items[0].innerHTML;
+			lastQuestion = items[0].parentElement.innerHTML;
 
 			// if the question was already answered, highlight the correct answer
 			if(lastQuestion in answers){
@@ -36,7 +36,7 @@
 						if(buttons.indexOf(outer) != buttons.length-1){
 							document.querySelector(".sc-bvZOhf.fTllCc").append(outer);
 						}
-					}else if(haveCorrectAnswer || answer.incorrects.includes(item.parentElement.innerHTML)){
+					}else if(haveCorrectAnswer || answer.incorrects?.includes(item.parentElement.innerHTML)){
 						item.nthparent(parentAmount).style.backgroundColor = "red";
 					}
 				}
