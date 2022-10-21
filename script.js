@@ -4,8 +4,8 @@
 	var listenedButtons = [];
 	let answers = {};
 	let lastQuestion = null;
-	let lastClickedAnswer = null;
-	let wasQuestionAnswered = false;
+	let lastAnswer = null;
+	let lastAnswerType = null;
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 	
 	let observer = new MutationObserver(function() {
@@ -22,7 +22,18 @@
 
 				if(answer.correct){
 					haveCorrectAnswer = true;
-					wasQuestionAnswered = true;
+				}
+
+				if(answer.textAnswer){
+					if(items[0].parentElement.querySelector(".correct-answer") != null) return;
+					let answerText = answer.textAnswer;
+					let answerNode = document.createElement("div");
+					answerNode.innerHTML = `Correct answer: ${answerText}`;
+					answerNode.classList.add("correct-answer");
+					items[0].parentElement.append(answerNode);
+					let input = document.querySelector(".sc-RpuvT");
+					input.value = answerText.slice(0, -1);
+					return;
 				}
 
 				for(let i = 1; i < items.length; i++){
@@ -42,6 +53,17 @@
 				}
 			}
 
+			// check if the question is a text input
+			let input = document.querySelector(".sc-RpuvT");
+			if(input != null){
+				lastAnswerType = "text";
+				input.addEventListener("input", (e) => {
+					lastAnswer = e.target.value;
+				})
+				return;
+			}
+
+			lastAnswerType = "button";
 			for(let i = 1; i < items.length; i++){
 				let button = items[i].nthparent(6);
 				if(items[i].nodeName == "IMG") button = items[i].nthparent(2);
@@ -51,14 +73,11 @@
 				}
 
 				button.addEventListener("click", function(){
-					lastClickedAnswer = this.querySelector(selector).parentElement.innerHTML;
+					lastAnswer = this.querySelector(selector).parentElement.innerHTML;
 				})
 			}
 		}else{
-			if(wasQuestionAnswered){
-				wasQuestionAnswered = false;
-				return;
-			};
+			if(answers[lastQuestion]?.correct != undefined) return;
 			let success = false;
 			// figure out whether it was right or not
 			let background = document.querySelector(".sc-kxYOAa");
@@ -70,14 +89,20 @@
 			if(incorrectBg){
 				if(!answers[lastQuestion]) answers[lastQuestion] = {}; 
 				if(!answers[lastQuestion].incorrects) answers[lastQuestion].incorrects = [];
-				answers[lastQuestion].incorrects.push(lastClickedAnswer);
+				answers[lastQuestion].incorrects.push(lastAnswer);
 			}
 
 			if(success){
-				if(!answers[lastQuestion]) answers[lastQuestion] = {};
-				answers[lastQuestion].correct = lastClickedAnswer;
-				console.log(answers)
-				// console.log(answers);
+				if(lastAnswerType == "text"){
+					// answer was text
+					if(!answers[lastQuestion]) answers[lastQuestion] = {};
+					answers[lastQuestion].textAnswer = lastAnswer;
+				}else{
+					// answer was a button
+					if(!answers[lastQuestion]) answers[lastQuestion] = {};
+					answers[lastQuestion].correct = lastAnswer;
+					console.log(answers)
+				}
 			}
 		}
 	});
