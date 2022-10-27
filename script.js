@@ -1,8 +1,17 @@
 (function(){
-	alert("Gimkit Script Enabled");
+	let id = prompt("Add an ID to save the current quiz with, or to load one you previously saved");
+	let answers = {};
+	let saveOrLoad = "save";
+	if(id){
+		let data = localStorage.getItem("gc_cheat_kits") ?? "{}";
+		data = JSON.parse(data);
+		if(data[id]){
+			saveOrLoad = "load";
+			answers = data[id];
+		}
+	}
 	
 	var listenedButtons = [];
-	let answers = {};
 	let lastQuestion = null;
 	let lastAnswer = null;
 	let lastAnswerType = null;
@@ -90,6 +99,12 @@
 				if(!answers[lastQuestion]) answers[lastQuestion] = {}; 
 				if(!answers[lastQuestion].incorrects) answers[lastQuestion].incorrects = [];
 				answers[lastQuestion].incorrects.push(lastAnswer);
+				if(saveOrLoad == "save"){
+					let currentData = localStorage.getItem("gc_cheat_kits") ?? "{}";
+					currentData = JSON.parse(currentData);
+					currentData[id] = answers;
+					localStorage.setItem("gc_cheat_kits", JSON.stringify(currentData));
+				}
 			}
 
 			if(success){
@@ -102,6 +117,12 @@
 					if(!answers[lastQuestion]) answers[lastQuestion] = {};
 					answers[lastQuestion].correct = lastAnswer;
 					console.log(answers)
+				}
+				if(saveOrLoad == "save"){
+					let currentData = localStorage.getItem("gc_cheat_kits") ?? "{}";
+					currentData = JSON.parse(currentData);
+					currentData[id] = answers;
+					localStorage.setItem("gc_cheat_kits", JSON.stringify(currentData));
 				}
 			}
 		}
