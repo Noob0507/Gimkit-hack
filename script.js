@@ -1,13 +1,15 @@
 (function(){
 	let id = prompt("Add an ID to save the current quiz with, or to load one you previously saved");
 	let answers = {};
-	let saveOrLoad = "save";
+	let saveOrLoad = "none";
 	if(id){
 		let data = localStorage.getItem("gc_cheat_kits") ?? "{}";
 		data = JSON.parse(data);
 		if(data[id]){
 			saveOrLoad = "load";
 			answers = data[id];
+		}else{
+			saveOrLoad = "save";
 		}
 	}
 	
