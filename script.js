@@ -1,5 +1,6 @@
 (function(){
-	let id = prompt("Add an ID to save the current quiz with, or to load one you previously saved");
+	let kits = JSON.parse(localStorage.getItem('gc_cheat_kits') ?? "{}");
+	let id = prompt("Add an ID to save the current quiz with, or to load one you previously saved. Saved kits: " + Object.keys(kits).join(", "));
 	let answers = {};
 	let saveOrLoad = "none";
 	if(id){
@@ -91,11 +92,10 @@
 			if(answers[lastQuestion]?.correct != undefined) return;
 			let success = false;
 			// figure out whether it was right or not
-			let background = document.querySelector(".sc-kxYOAa");
+			let background = document.querySelector(".sc-lhGUXL");
 			let incorrectBg = document.querySelector(".sc-Kgodr");
 			if(background){
-				const color = getComputedStyle(background).backgroundColor
-				if(color == "rgb(56, 142, 60)") success = true;
+				success = true;
 			}
 			if(incorrectBg){
 				if(!answers[lastQuestion]) answers[lastQuestion] = {}; 
