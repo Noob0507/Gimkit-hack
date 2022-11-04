@@ -55,9 +55,10 @@
 					if(item.parentElement.innerHTML == answer.correct){
 						item.nthparent(parentAmount).style.backgroundColor = "green";
 						let outer = item.nthparent(parentAmount*2);
-						let buttons = Array.from(document.querySelector(".sc-bvZOhf.fTllCc").children)
+						let buttonParent = document.querySelectorAll(".notranslate.lang-en")[2].nthparent(7)
+						let buttons = Array.from(buttonParent.children)
 						if(buttons.indexOf(outer) != buttons.length-1){
-							document.querySelector(".sc-bvZOhf.fTllCc").append(outer);
+							buttonParent.append(outer);
 						}
 					}else if(haveCorrectAnswer || answer.incorrects?.includes(item.parentElement.innerHTML)){
 						item.nthparent(parentAmount).style.backgroundColor = "red";
