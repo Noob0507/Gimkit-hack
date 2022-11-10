@@ -1,21 +1,21 @@
 (function(){
-	let kits = JSON.parse(localStorage.getItem('gc_cheat_kits') ?? "{}");
-	let id = prompt(`Add an ID to save the current quiz with, so you can reuse it in the future, or add the ID of another kit to load it. Leave blank to skip. ${Object.keys(kits).length == 0?"No saved kits.":"Saved kits: " + Object.keys(kits).join(", ")}`);
-	let answers = {};
-	if(id){
-		let data = localStorage.getItem("gc_cheat_kits") ?? "{}";
-		data = JSON.parse(data);
-		if(data[id]){
-			answers = data[id];
+	// migrate from the old save/load system
+	let kits = localStorage.getItem("gc_cheat_kits")
+	if(kits){
+		kits = JSON.parse(kits);
+		let answers = {}
+		for(let key of Object.keys(kits)){
+			answers = {...answers, ...kits[key]}
 		}
+		localStorage.setItem("gc_cheat_answers", JSON.stringify(answers))
+		localStorage.removeItem("gc_cheat_kits")
 	}
+
+	let answers = JSON.parse(localStorage.getItem('gc_cheat_answers') ?? "{}");
+	alert("gimkit script loaded");
 	
 	const save = () => {
-		if(!id) return;
-		let currentData = localStorage.getItem("gc_cheat_kits") ?? "{}";
-		currentData = JSON.parse(currentData);
-		currentData[id] = answers;
-		localStorage.setItem("gc_cheat_kits", JSON.stringify(currentData));
+		localStorage.setItem("gc_cheat_answers", JSON.stringify(answers));
 	}
 
 	var listenedButtons = [];
@@ -53,13 +53,16 @@
 				}
 
 				for(let i = 1; i < items.length; i++){
+					// move the correct answer to the bottom
 					let item = items[i]
 					let parentAmount = 3;
 					if(item.nodeName == 'IMG') parentAmount = 1;
 					if(item.parentElement.innerHTML == answer.correct){
 						item.nthparent(parentAmount).style.backgroundColor = "green";
 						let outer = item.nthparent(parentAmount*2);
-						let buttonParent = document.querySelectorAll(".notranslate.lang-en")[2].nthparent(7)
+						let buttonParent = document.querySelectorAll(selector)[2]
+						if(buttonParent.nodeName == "IMG") buttonParent = buttonParent.nthparent(3);
+						else buttonParent = buttonParent.nthparent(7);
 						let buttons = Array.from(buttonParent.children)
 						if(buttons.indexOf(outer) != buttons.length-1){
 							buttonParent.append(outer);
