@@ -14,4 +14,4 @@ When starting the script you get prompted on whether or not you want to color in
 
 Gimkit, for whatever reason, forces you to type into the input box before submitting a text answer. This script tells you the correct answer, but you stull need to type it in.
 
-[Image: what colored in answers look like](/images/correct_example.png)
+![Image: what colored in answers look like](/images/correct_example.png)
