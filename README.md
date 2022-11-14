@@ -4,7 +4,8 @@ All you need to do is copy the code from script.js and paste it into the console
 
 ## Getting Kicked
 
-Sometimes if you answer too fast Gimkit will kick you out of the game. If this happens you'll need to slow down in the future.
+Sometimes if you answer too fast Gimkit will kick you out of the game. While it's not entirely understood the conditions for this to happen, you can circumvent it by taking breaks or slowing down.
+![Image: too fast](/images/too_fast.png)
 
 ## Color in answers
 
@@ -12,6 +13,6 @@ When starting the script you get prompted on whether or not you want to color in
 
 ### Notes on text answers:
 
-Gimkit, for whatever reason, forces you to type into the input box before submitting a text answer. This script tells you the correct answer, but you stull need to type it in.
+Gimkit, for whatever reason, forces you to type into the input box before submitting a text answer. This script tells you the correct answer, but you still need to type it in.
 
 ![Image: what colored in answers look like](/images/correct_example.png)
