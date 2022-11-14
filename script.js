@@ -12,7 +12,8 @@
 	}
 
 	let answers = JSON.parse(localStorage.getItem('gc_cheat_answers') ?? "{}");
-	alert("gimkit script loaded");
+
+	let color = prompt("Would you like to color in the answers? (Y/n)", "Y").toLowerCase() == "y";
 	
 	const save = () => {
 		localStorage.setItem("gc_cheat_answers", JSON.stringify(answers));
@@ -53,12 +54,13 @@
 				}
 
 				for(let i = 1; i < items.length; i++){
-					// move the correct answer to the bottom
+					// color and move answers
 					let item = items[i]
 					let parentAmount = 3;
 					if(item.nodeName == 'IMG') parentAmount = 1;
 					if(item.parentElement.innerHTML == answer.correct){
-						item.nthparent(parentAmount).style.backgroundColor = "green";
+						// color in and move the correct answer to the bottom
+						if(color) item.nthparent(parentAmount).style.backgroundColor = "green";
 						let outer = item.nthparent(parentAmount*2);
 						let buttonParent = document.querySelectorAll(selector)[2]
 						if(buttonParent.nodeName == "IMG") buttonParent = buttonParent.nthparent(3);
@@ -68,7 +70,8 @@
 							buttonParent.append(outer);
 						}
 					}else if(haveCorrectAnswer || answer.incorrects?.includes(item.parentElement.innerHTML)){
-						item.nthparent(parentAmount).style.backgroundColor = "red";
+						// color incorrect answers
+						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
 					}
 				}
 			}
