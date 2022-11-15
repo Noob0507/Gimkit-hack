@@ -24,8 +24,8 @@
 	let lastAnswer = null;
 	let lastAnswerType = null;
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
-	
-	let observer = new MutationObserver(function() {
+
+	function pageChange() {
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
 		// console.log(items.length)
@@ -129,7 +129,9 @@
 				save();
 			}
 		}
-	});
+	}
+
+	let observer = new MutationObserver(pageChange);
 	observer.observe(document.body, {subtree: true, childList: true});
 
 	HTMLElement.prototype.nthparent = function(n) {
@@ -137,4 +139,7 @@
 		while (n-- && parent) parent = parent.parentElement;
 		return parent;
 	}
+
+	// check if the questions are open when the script is loaded
+	pageChange();
 })();

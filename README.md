@@ -4,7 +4,7 @@ All you need to do is copy the code from script.js and paste it into the console
 
 ## Getting Kicked
 
-Sometimes if you answer too fast Gimkit will kick you out of the game. While it's not entirely understood the conditions for this to happen, you can circumvent it by taking breaks or slowing down.
+Sometimes if you answer too fast Gimkit will kick you out of the game. While it's not entirely understood the conditions for this to happen, you can circumvent it by taking breaks or slowing down. (It does only appear to happen in Classic mode, though.)
 ![Image: too fast](/images/too_fast.png)
 
 ## Color in answers
