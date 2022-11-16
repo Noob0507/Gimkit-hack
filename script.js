@@ -23,23 +23,27 @@
 	let lastQuestion = null;
 	let lastAnswer = null;
 	let lastAnswerType = null;
+	var newAnswers = 0;
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 
 	function pageChange() {
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
-		// console.log(items.length)
+
 		if(items.length > 0){
+			if(items.length == 1){
+				// this is an incorrect answer
+				if(!answers[lastQuestion]) answers[lastQuestion] = {};
+				answers[lastQuestion].correct = items[0].parentElement.innerHTML;
+				console.log("New answer found: ", answers[lastQuestion].correct);
+				save();
+				return;
+			}
 			lastQuestion = items[0].parentElement.innerHTML;
 
 			// if the question was already answered, highlight the correct answer
 			if(lastQuestion in answers){
 				let answer = answers[lastQuestion];
-				let haveCorrectAnswer = false;
-
-				if(answer.correct){
-					haveCorrectAnswer = true;
-				}
 
 				if(answer.textAnswer){
 					if(items[0].parentElement.querySelector(".correct-answer") != null) return;
@@ -53,7 +57,7 @@
 					return;
 				}
 
-				for(let i = 1; i < items.length; i++){
+				for(let i = 1; i < items.length && answer.correct; i++){
 					// color and move answers
 					let item = items[i]
 					let parentAmount = 3;
@@ -69,7 +73,7 @@
 						if(buttons.indexOf(outer) != buttons.length-1){
 							buttonParent.append(outer);
 						}
-					}else if(haveCorrectAnswer || answer.incorrects?.includes(item.parentElement.innerHTML)){
+					}else{
 						// color incorrect answers
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
 					}
@@ -104,18 +108,12 @@
 			let success = false;
 			// figure out whether it was right or not
 			let background = document.querySelector(".sc-lhGUXL");
-			let incorrectBg = document.querySelector(".sc-Kgodr");
 			if(background){
 				success = true;
 			}
-			if(incorrectBg){
-				if(!answers[lastQuestion]) answers[lastQuestion] = {}; 
-				if(!answers[lastQuestion].incorrects) answers[lastQuestion].incorrects = [];
-				answers[lastQuestion].incorrects.push(lastAnswer);
-				save();
-			}
 
 			if(success){
+				newAnswers++;
 				if(lastAnswerType == "text"){
 					// answer was text
 					if(!answers[lastQuestion]) answers[lastQuestion] = {};
@@ -124,8 +122,8 @@
 					// answer was a button
 					if(!answers[lastQuestion]) answers[lastQuestion] = {};
 					answers[lastQuestion].correct = lastAnswer;
-					console.log(answers)
 				}
+				console.log(`Total answers stored: ${Object.keys(answers).length}\nNew answers this session: ${newAnswers}`)
 				save();
 			}
 		}
