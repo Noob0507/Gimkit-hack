@@ -33,10 +33,11 @@
 		if(items.length > 0){
 			if(items.length == 1){
 				// this is an incorrect answer
+				newAnswers++;
 				if(!answers[lastQuestion]) answers[lastQuestion] = {};
 				answers[lastQuestion].correct = items[0].parentElement.innerHTML;
-				console.log("New answer found: ", answers[lastQuestion].correct);
 				save();
+				console.log(`Total answers stored: ${Object.keys(answers).length}\nNew answers this session: ${newAnswers}`)
 				return;
 			}
 			lastQuestion = items[0].parentElement.innerHTML;
