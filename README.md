@@ -1,6 +1,6 @@
 # GimkitCheat
 
-All you need to do is copy the code from script.js and paste it into the console on gimkit. After seeing a question once, it'll remember that and the next time you see it it will color it in green and move it to the bottom right. Once you've answered all the questions once you can spam your mouse at the bottom right.
+All you need to do to run the script is to copy the code from script.js and paste it into the console while on gimkit. After seeing a question once, it'll remember that and the next time you see it it will color it in green and move it to the bottom right. Once you've answered all the questions once you can spam your mouse at the bottom right.
 
 ## Getting Kicked
 

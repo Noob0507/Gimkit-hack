@@ -31,11 +31,15 @@
 		let items = document.querySelectorAll(selector)
 
 		if(items.length > 0){
-			if(items.length == 1){
+			if(items.length == 1 && (document.querySelector("input") == null)){
 				// this is an incorrect answer
 				newAnswers++;
 				if(!answers[lastQuestion]) answers[lastQuestion] = {};
-				answers[lastQuestion].correct = items[0].parentElement.innerHTML;
+				if(lastAnswerType == "text"){
+					answers[lastQuestion].textAnswer = items[0].innerHTML;
+				}else{
+					answers[lastQuestion].correct = items[0].parentElement.innerHTML;
+				}
 				save();
 				console.log(`Total answers stored: ${Object.keys(answers).length}\nNew answers this session: ${newAnswers}`)
 				return;
@@ -52,8 +56,9 @@
 					let answerNode = document.createElement("div");
 					answerNode.innerHTML = `Correct answer: ${answerText}`;
 					answerNode.classList.add("correct-answer");
+					answerNode.style.fontSize = "16px";
 					items[0].parentElement.append(answerNode);
-					let input = document.querySelector(".sc-RpuvT");
+					let input = document.querySelector("input");
 					input.value = answerText.slice(0, -1);
 					return;
 				}
