@@ -19,6 +19,11 @@
 		localStorage.setItem("gc_cheat_answers", JSON.stringify(answers));
 	}
 
+	const stripStyles = (str) => {
+		// remove all text after style=" and before "
+		return str.replace(/style=".*?"/g, "");
+	}
+
 	var listenedButtons = [];
 	let lastQuestion = null;
 	let lastAnswer = null;
@@ -33,6 +38,7 @@
 		if(items.length > 0){
 			if(items.length == 1 && (document.querySelector("input") == null)){
 				// this is an incorrect answer
+				if(!lastQuestion) return;
 				newAnswers++;
 				if(!answers[lastQuestion]) answers[lastQuestion] = {};
 				if(lastAnswerType == "text"){
@@ -44,7 +50,7 @@
 				console.log(`Total answers stored: ${Object.keys(answers).length}\nNew answers this session: ${newAnswers}`)
 				return;
 			}
-			lastQuestion = items[0].parentElement.innerHTML;
+			lastQuestion = stripStyles(items[0].parentElement.innerHTML);
 
 			// if the question was already answered, highlight the correct answer
 			if(lastQuestion in answers){
@@ -68,7 +74,7 @@
 					let item = items[i]
 					let parentAmount = 3;
 					if(item.nodeName == 'IMG') parentAmount = 1;
-					if(item.parentElement.innerHTML == answer.correct){
+					if(stripStyles(item.parentElement.innerHTML) == stripStyles(answer.correct)){
 						// color in and move the correct answer to the bottom
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "green";
 						let outer = item.nthparent(parentAmount*2);
@@ -127,7 +133,7 @@
 				}else{
 					// answer was a button
 					if(!answers[lastQuestion]) answers[lastQuestion] = {};
-					answers[lastQuestion].correct = lastAnswer;
+					answers[lastQuestion].correct = stripStyles(lastAnswer);
 				}
 				console.log(`Total answers stored: ${Object.keys(answers).length}\nNew answers this session: ${newAnswers}`)
 				save();
