@@ -97,15 +97,17 @@
 							buttonParent.append(outer);
 						}
 						correctSeen = true;
+						if(item.nodeName == "IMG") item.parentElement.style.background = colors[3];
+						else item.nthparent(5).style.background = colors[3];
 					}else{
 						// color incorrect answers
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
 						else {
 							if(correctSeen){
-								console.log(colors[i])
+								console.log(colors[i-2])
 								// swap the item's background color to match the one it's supposed to be
-								if(item.nodeName == "IMG") item.parentElement.background = colors[i-1];
-								else item.nthparent(5).background = colors[i-1];
+								if(item.nodeName == "IMG") item.parentElement.style.background = colors[i-2];
+								else item.nthparent(5).style.background = colors[i-2];
 							}
 						}
 					}
