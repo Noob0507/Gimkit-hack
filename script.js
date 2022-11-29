@@ -69,6 +69,17 @@
 					return;
 				}
 
+				// get the colors of the options
+				let colors = [];
+				items.forEach((item, i) => {
+					if(i == 0) return;
+					let parentAmount = 5;
+					if(item.nodeName == "IMG") parentAmount = 1;
+					let bgColor = getComputedStyle(item.nthparent(parentAmount)).background;
+					colors.push(bgColor);
+				})
+
+				let correctSeen = false;
 				for(let i = 1; i < items.length && answer.correct; i++){
 					// color and move answers
 					let item = items[i]
@@ -85,9 +96,18 @@
 						if(buttons.indexOf(outer) != buttons.length-1){
 							buttonParent.append(outer);
 						}
+						correctSeen = true;
 					}else{
 						// color incorrect answers
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
+						else {
+							if(correctSeen){
+								console.log(colors[i])
+								// swap the item's background color to match the one it's supposed to be
+								if(item.nodeName == "IMG") item.parentElement.background = colors[i-1];
+								else item.nthparent(5).background = colors[i-1];
+							}
+						}
 					}
 				}
 			}
