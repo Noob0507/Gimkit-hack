@@ -32,7 +32,6 @@
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 
 	function pageChange() {
-		console.log(answers)
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
 
@@ -108,7 +107,6 @@
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
 						else {
 							if(correctSeen){
-								console.log(colors[i-2])
 								// swap the item's background color to match the one it's supposed to be
 								if(item.nodeName == "IMG") item.parentElement.style.background = colors[i-2];
 								else item.nthparent(5).style.background = colors[i-2];
