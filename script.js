@@ -32,6 +32,7 @@
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 
 	function pageChange() {
+		console.log(answers)
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
 
@@ -80,7 +81,7 @@
 				})
 
 				let correctSeen = false;
-				for(let i = 1; i < items.length && answer.correct; i++){
+				for(let i = items.length==5?1:2; i < items.length && answer.correct; i++){
 					// color and move answers
 					let item = items[i]
 					let parentAmount = 3;
@@ -88,6 +89,11 @@
 					if(stripStyles(item.parentElement.innerHTML) == stripStyles(answer.correct)){
 						// color in and move the correct answer to the bottom
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "green";
+						else{
+							// set it to the correct color
+							if(item.nodeName == "IMG") item.parentElement.style.background = colors[3];
+							else item.nthparent(5).style.background = colors[3];
+						}
 						let outer = item.nthparent(parentAmount*2);
 						let buttonParent = document.querySelectorAll(selector)[2]
 						if(buttonParent.nodeName == "IMG") buttonParent = buttonParent.nthparent(3);
@@ -97,8 +103,6 @@
 							buttonParent.append(outer);
 						}
 						correctSeen = true;
-						if(item.nodeName == "IMG") item.parentElement.style.background = colors[3];
-						else item.nthparent(5).style.background = colors[3];
 					}else{
 						// color incorrect answers
 						if(color) item.nthparent(parentAmount).style.backgroundColor = "red";
@@ -139,14 +143,10 @@
 			}
 		}else{
 			if(answers[lastQuestion]?.correct != undefined) return;
-			let success = false;
 			// figure out whether it was right or not
-			let background = document.querySelector(".sc-lhGUXL");
-			if(background){
-				success = true;
-			}
+			let greenBgExists = Array.from(document.querySelectorAll("div")).some(e => getComputedStyle(e).backgroundColor == "rgb(56, 142, 60)") 
 
-			if(success){
+			if(greenBgExists){
 				newAnswers++;
 				if(lastAnswerType == "text"){
 					// answer was text
