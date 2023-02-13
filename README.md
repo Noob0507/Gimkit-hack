@@ -11,6 +11,10 @@ Sometimes if you answer too fast Gimkit will kick you out of the game. While it'
 
 When starting the script you get prompted on whether or not you want to color in answers or not. Selecting no will still move the correct answer to the bottom right, but it's less obvious.
 
+## Disabling/Enabling the script on the fly
+
+By hitting shift three times in quick succession, the script will toggle between being enabled and disabled.
+
 ### Notes on text answers:
 
 Gimkit, for whatever reason, forces you to type into the input box before submitting a text answer. This script tells you the correct answer, but you still need to type it in.
