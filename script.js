@@ -31,7 +31,10 @@
 	var newAnswers = 0;
 	const selector = '.notranslate, img[alt="Answer Choice"], img[alt="Question"]';
 
+	let active = true;
+
 	function pageChange() {
+		if(!active) return;
 		// the menu was probably opened
 		let items = document.querySelectorAll(selector)
 
@@ -172,4 +175,26 @@
 
 	// check if the questions are open when the script is loaded
 	pageChange();
+
+	// When shift is hit three times in quick succession, toggle active
+	let shiftCount = 0;
+	let shiftTimeout = null;
+	document.addEventListener("keydown", (e) => {
+		if(e.key == "Shift"){
+			shiftCount++;
+			if(shiftTimeout != null) clearTimeout(shiftTimeout);
+			shiftTimeout = setTimeout(() => {
+				shiftCount = 0;
+			}, 1000);
+			if(shiftCount == 3){
+				active = !active;
+				if(active) {
+					console.log("Active");
+					pageChange();
+				}
+				else console.log("Inactive");
+				shiftCount = 0;
+			}
+		}
+	})
 })();
