@@ -83,6 +83,21 @@
 				})
 
 				let correctSeen = false;
+				let correctExists = false;
+				for(let i = 0; i < items.length; i++){
+					let item = items[i];
+					let parentAmount = 5;
+					if(item.nodeName == "IMG") parentAmount = 1;
+					if(stripStyles(item.parentElement.innerHTML) == stripStyles(answer.correct)){
+						correctExists = true;
+						break;
+					}
+				}
+				if(!correctExists) {
+					// remove the question from the answers
+					delete answers[lastQuestion];
+					return;
+				}
 				for(let i = items.length==5?1:2; i < items.length && answer.correct; i++){
 					// color and move answers
 					let item = items[i]
